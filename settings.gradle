@@ -1,0 +1,3 @@
+include ':core', ':android'
+
+rootProject.name='Enfasys-Core-Android'

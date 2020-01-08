@@ -1,0 +1,13 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+apply plugin: 'maven'
+
+group = buildConfig.group
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api libraries.stdlib
+    api libraries.coroutines.core
+    api libraries.moshi
+    testImplementation testingLibraries.kotlinJunit
+}

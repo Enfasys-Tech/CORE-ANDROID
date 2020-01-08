@@ -1,0 +1,17 @@
+# IDEA
+*.iml
+/.idea
+!/.idea/runConfigurations
+
+# Gradle
+.gradle
+build
+/reports
+
+# Gradle Android
+/local.properties
+/keystore.properties
+/captures
+
+# OSX
+.DS_Store

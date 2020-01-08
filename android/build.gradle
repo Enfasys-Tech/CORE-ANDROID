@@ -1,0 +1,67 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.github.dcendents.android-maven'
+
+group = buildConfig.group
+
+android {
+    compileSdkVersion buildConfig.compileSdk
+    buildToolsVersion buildConfig.buildTools
+
+    defaultConfig {
+        minSdkVersion buildConfig.minSdk
+        targetSdkVersion buildConfig.targetSdk
+        versionCode buildConfig.code
+        versionName buildConfig.name
+
+        resConfigs buildConfig.resConfigs
+        testInstrumentationRunner buildConfig.runner
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude("META-INF/*.kotlin_module")
+    }
+
+    testOptions.unitTests.includeAndroidResources = true
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(":core")
+    api libraries.stdlib
+    api libraries.appcompat
+    api libraries.coroutines.core
+    api libraries.coroutines.android
+    implementation libraries.coroutines.playServices
+    api libraries.dagger.core
+    api libraries.dagger.android
+    api libraries.lifecycle.viewmodel
+    api libraries.lifecycle.extensions
+    api libraries.lifecycle.runtime
+    api libraries.redux
+    implementation libraries.firebase
+    implementation libraries.threetenabp
+    implementation libraries.s3
+    implementation libraries.compressor
+    implementation libraries.material
+    implementation libraries.timber
+    testImplementation testingLibraries.kotlinJunit
+    testImplementation testingLibraries.androidxCore
+    testImplementation testingLibraries.roboeletric
+}

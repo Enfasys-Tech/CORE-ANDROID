@@ -1,0 +1,13 @@
+<resources>
+    <string name="core_dialog_error_title">Error</string>
+    <string name="core_dialog_button_ok">OK</string>
+    <string name="core_dialog_button_cancel">Cancelar</string>
+    <string name="core_dialog_button_understood">Entendido</string>
+    <string name="core_dialog_button_close">Cerrar</string>
+    <string name="core_dialog_button_retry">Reintentar</string>
+    <string name="core_dialog_button_done">Listo</string>
+    <string name="core_dialog_error_networkConnection">No se ha detectado una conexión a Internet. Revise su conexión y vúelvalo a intentarlo.</string>
+    <string name="core_dialog_error_serverError">Ha ocurrido un error en el servidor, inténtelo nuevamente</string>
+    <string name="core_dialog_error_deviceError">Ha ocurrido un error en su dispositivo, inténtelo nuevamente. Si el error persiste, cierre y vuelva a abrir la aplicación.</string>
+    <string name="core_dialog_error_generalError">Ha ocurrido un error inesperado, inténtelo nuevamente. Si el error persiste, cierre y vuelva a abrir la aplicación.</string>
+</resources>
