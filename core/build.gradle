@@ -4,6 +4,10 @@ apply plugin: 'maven'
 
 group = buildConfig.group
 
+compileKotlin {
+    kotlinOptions.freeCompilerArgs += ['-module-name', "enfasys.android.core"]
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api libraries.stdlib
