@@ -8,7 +8,7 @@ ext.versions = [
 ]
 
 ext.buildConfig = [
-        'group'     : 'com.github.enfasys.android-core',
+        'group'     : 'com.github.enfasys-tech.android-core',
         'compileSdk': 29,
         'minSdk'    : 23,
         'targetSdk' : 29,
