@@ -9,9 +9,7 @@ import enfasys.android.impl.mvi.MviViewModel
 import enfasys.android.impl.mvi.MviViewState
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.*
 import kotlin.coroutines.CoroutineContext
 
 @Suppress("MemberVisibilityCanBePrivate")
@@ -24,7 +22,10 @@ abstract class BaseViewModel<Action : MviAction, ViewState : MviViewState>(
     override val coroutineContext: CoroutineContext
         get() = SupervisorJob() + dispatcherGroup.IO
 
-    override fun states(): Flow<ViewState> = statesChannel.asFlow().distinctUntilChanged()
+    override fun states(): Flow<ViewState> =
+        statesChannel.asFlow()
+            .distinctUntilChanged()
+            .flowOn(coroutineContext)
 
     override fun process(action: Action) {
         stateMachine.dispatch(action)
