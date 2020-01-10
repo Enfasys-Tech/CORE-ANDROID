@@ -13,7 +13,7 @@ class AndroidNetworkVerifier @Inject constructor(appContext: Context) : NetworkV
         appContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     override fun isConnectionAvailable(): Boolean {
-        val network = connectivityManager.activeNetwork ?: return false
+        val network = connectivityManager.activeNetwork
         val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
         return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }

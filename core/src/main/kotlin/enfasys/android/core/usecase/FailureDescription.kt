@@ -1,5 +1,10 @@
 package enfasys.android.core.usecase
 
+object NoDataInServerResponseError : Throwable()
+object NoMessageInServerResponseError : Throwable()
+object NoTokenAvailableError : Throwable()
+object NoFileAvailableError : Throwable()
+
 sealed class FailureDescription {
     object NetworkConnectionError : FailureDescription()
 
@@ -37,8 +42,3 @@ sealed class FailureDescription {
         }
     }
 }
-
-object NoDataInServerResponseError : Throwable()
-object NoMessageInServerResponseError : Throwable()
-object NoTokenAvailableError : Throwable()
-object NoFileAvailableError : Throwable()

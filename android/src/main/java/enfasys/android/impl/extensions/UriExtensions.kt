@@ -38,4 +38,3 @@ fun Fragment.startActivityToVisualizaeImage(uri: Uri) {
     intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
     startActivity(intent)
 }
-

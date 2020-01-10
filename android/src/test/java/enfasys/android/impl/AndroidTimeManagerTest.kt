@@ -1,8 +1,6 @@
 package enfasys.android.impl
 
-import enfasys.android.impl.BaseTest
 import enfasys.android.core.TimeManager
-import enfasys.android.impl.AndroidTimeManager
 import org.junit.Before
 import java.util.*
 import kotlin.test.Test

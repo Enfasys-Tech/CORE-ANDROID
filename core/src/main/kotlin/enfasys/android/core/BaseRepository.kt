@@ -1,12 +1,15 @@
 package enfasys.android.core
 
-import enfasys.android.core.usecase.*
+import enfasys.android.core.usecase.FailureDescription
+import enfasys.android.core.usecase.NoDataInServerResponseError
+import enfasys.android.core.usecase.NoMessageInServerResponseError
+import enfasys.android.core.usecase.Result
 
 @Suppress("MemberVisibilityCanBePrivate")
-abstract class BaseRepository(
-    protected val logger: Logger,
-    protected val networkVerifier: NetworkVerifier
-) {
+interface BaseRepository {
+    val logger: Logger
+    val networkVerifier: NetworkVerifier
+
     suspend fun <T> safeCall(block: suspend () -> NetworkResponse<out T>): Result<T> {
         return try {
             val response = block()

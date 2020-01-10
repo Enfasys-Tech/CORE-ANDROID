@@ -4,20 +4,20 @@ import com.freeletics.coredux.Store
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
-interface MviAction
+interface Action
 
-interface MviViewState
+interface ViewState
 
-interface MviView<A : MviAction, VS : MviViewState> {
+interface MviView<A : Action, VS : ViewState> {
     fun render(state: VS)
 }
 
-interface MviViewModel<A : MviAction, VS : MviViewState> {
+interface MviViewModel<A : Action, VS : ViewState> {
     fun process(action: A)
     fun states(): Flow<VS>
 }
 
-interface MviStateMachine<A : MviAction, VS : MviViewState> {
+interface StateMachine<A : Action, VS : ViewState> {
     fun createStore(scope: CoroutineScope): Store<VS, A>
     fun dispatch(action: A)
 }

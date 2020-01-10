@@ -1,0 +1,23 @@
+build:
+  maxIssues: 1
+
+exceptions:
+  active: true
+  TooGenericExceptionCaught:
+    active: true
+    exceptionNames:
+      - ArrayIndexOutOfBoundsException
+      - IllegalMonitorStateException
+      - IndexOutOfBoundsException
+      - NullPointerException
+      - RuntimeException
+  TooGenericExceptionThrown:
+    active: true
+    exceptionNames:
+      - Error
+      - RuntimeException
+
+style:
+  MaxLineLength:
+    excludes: "**/test/**,**/*.Test.kt,**/*.Spec.kt,**/*Test.kt"
+    excludeCommentStatements: true

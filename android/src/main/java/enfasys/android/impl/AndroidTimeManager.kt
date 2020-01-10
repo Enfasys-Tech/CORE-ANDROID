@@ -1,7 +1,12 @@
 package enfasys.android.impl
 
 import enfasys.android.core.TimeManager
-import org.threeten.bp.*
+import org.threeten.bp.Instant
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.LocalTime
+import org.threeten.bp.ZoneId
+import org.threeten.bp.ZoneOffset
+import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -33,7 +38,7 @@ class AndroidTimeManager @Inject constructor() : TimeManager {
     }
 
     override fun getTimezoneOffset(): Long {
-        return ZonedDateTime.now().offset.totalSeconds * 1000L
+        return ZonedDateTime.now().offset.totalSeconds * MILLISECONDS
     }
 
     override fun formatEpochMillis(millis: Long, format: String, asUtc: Boolean): String {
@@ -91,5 +96,9 @@ class AndroidTimeManager @Inject constructor() : TimeManager {
         val withoutZ = withoutT.replace("Z", "")
 
         return withoutZ.substringBefore("+")
+    }
+
+    companion object {
+        const val MILLISECONDS = 1000L
     }
 }

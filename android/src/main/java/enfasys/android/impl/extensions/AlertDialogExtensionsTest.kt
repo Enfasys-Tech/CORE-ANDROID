@@ -1,8 +1,12 @@
 package enfasys.android.impl.extensions
 
 import android.content.Context
-import enfasys.android.core.usecase.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import enfasys.android.core.usecase.FailureDescription
+import enfasys.android.core.usecase.NoDataInServerResponseError
+import enfasys.android.core.usecase.NoFileAvailableError
+import enfasys.android.core.usecase.NoMessageInServerResponseError
+import enfasys.android.core.usecase.NoTokenAvailableError
 import enfasys.android.impl.R
 import kotlinx.coroutines.CancellationException
 

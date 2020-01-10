@@ -1,7 +1,5 @@
 package enfasys.android.impl.mvi
 
-import android.os.Bundle
-import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import enfasys.android.core.DispatcherGroup
 import enfasys.android.core.Logger
@@ -9,7 +7,7 @@ import enfasys.android.impl.BaseFragment
 import enfasys.android.impl.BaseViewModel
 import enfasys.android.impl.ViewModelFactory
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -19,8 +17,8 @@ import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 @Suppress("MemberVisibilityCanBePrivate")
-abstract class MviFragment<Action : MviAction, ViewState : MviViewState, ViewModel : BaseViewModel<Action, ViewState>> :
-    BaseFragment(), MviView<Action, ViewState>, CoroutineScope {
+abstract class MviFragment<A : Action, VS : ViewState, VM : BaseViewModel<A, VS>> :
+    BaseFragment(), MviView<A, VS>, CoroutineScope {
     @Inject
     protected lateinit var dispatcherGroup: DispatcherGroup
 
@@ -28,11 +26,11 @@ abstract class MviFragment<Action : MviAction, ViewState : MviViewState, ViewMod
     protected lateinit var logger: Logger
 
     override val coroutineContext: CoroutineContext
-        get() = Job() + dispatcherGroup.UI
+        get() = SupervisorJob() + dispatcherGroup.forUI
 
     @Inject
-    lateinit var viewModelFactory: ViewModelFactory<ViewModel>
-    protected val viewModel: ViewModel by lazy(LazyThreadSafetyMode.NONE) {
+    lateinit var viewModelFactory: ViewModelFactory<VM>
+    protected val viewModel: VM by lazy(LazyThreadSafetyMode.NONE) {
         if (isTheirOwnViewModel()) {
             ViewModelProviders.of(this, viewModelFactory)
                 .get(getViewModel())
@@ -42,19 +40,24 @@ abstract class MviFragment<Action : MviAction, ViewState : MviViewState, ViewMod
         }
     }
 
-    protected abstract fun getViewModel(): Class<ViewModel>
+    protected abstract fun getViewModel(): Class<VM>
 
     protected open fun isTheirOwnViewModel(): Boolean = true
 
+    protected fun isVisibleForTheUser(): Boolean {
+        return isAdded && isResumed && isResumed
+    }
+
     open fun onVisible(): Unit = Unit
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onStart() {
+        super.onStart()
         bind()
     }
 
-    protected fun isVisibleForTheUser(): Boolean {
-        return isAdded && isResumed && isResumed
+    override fun onStop() {
+        cancel()
+        super.onStop()
     }
 
     private fun bind() {
@@ -64,10 +67,5 @@ abstract class MviFragment<Action : MviAction, ViewState : MviViewState, ViewMod
                 .onCompletion { if (it != null) logger.e(it) }
                 .collect { render(it) }
         }
-    }
-
-    override fun onDestroy() {
-        cancel()
-        super.onDestroy()
     }
 }

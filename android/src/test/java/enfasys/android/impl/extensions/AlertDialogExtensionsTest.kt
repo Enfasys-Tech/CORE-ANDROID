@@ -2,8 +2,8 @@ package enfasys.android.impl.extensions
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import enfasys.android.impl.BaseTest
 import enfasys.android.core.usecase.FailureDescription
+import enfasys.android.impl.BaseTest
 import kotlinx.coroutines.CancellationException
 import org.junit.Test
 import kotlin.test.assertNotNull

@@ -1,0 +1,13 @@
+apply plugin: "io.gitlab.arturbosch.detekt"
+
+detekt {
+    input = files("src")
+    parallel = true
+    config = files(file("$project.rootDir/tools/detekt.yml"))
+    buildUponDefaultConfig = true
+    reports {
+        xml.enabled = true
+        html.enabled = true
+        txt.enabled = false
+    }
+}

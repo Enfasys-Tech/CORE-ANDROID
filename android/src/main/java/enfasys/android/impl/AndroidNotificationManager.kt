@@ -1,12 +1,12 @@
 package enfasys.android.impl
 
 import android.content.Context
+import com.google.firebase.FirebaseApp
+import com.google.firebase.iid.FirebaseInstanceId
 import enfasys.android.core.Logger
 import enfasys.android.core.NotificationManager
 import enfasys.android.core.usecase.NoTokenAvailableError
 import enfasys.android.core.usecase.Result
-import com.google.firebase.FirebaseApp
-import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -37,5 +37,4 @@ class AndroidNotificationManager @Inject constructor(
             Result.fail(NoTokenAvailableError)
         }
     }
-
 }

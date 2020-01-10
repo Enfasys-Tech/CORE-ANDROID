@@ -1,7 +1,9 @@
 package enfasys.android.core
 
-internal class FakeBaseRepository(logger: Logger, networkVerifier: NetworkVerifier) :
-    BaseRepository(logger, networkVerifier)
+internal class FakeBaseRepository(
+    override val logger: Logger,
+    override val networkVerifier: NetworkVerifier
+) : BaseRepository
 
 internal class FakeLogger : Logger {
     var wasCalled: Boolean = false
@@ -15,18 +17,4 @@ internal class FakeLogger : Logger {
 
 internal class FakeNetworkVerifier(private val shouldReturnTrue: Boolean) : NetworkVerifier {
     override fun isConnectionAvailable() = shouldReturnTrue
-}
-
-internal class FakeTimeManager(private val fixedTime: Long) : TimeManager {
-    override fun getTime(utc: Boolean): Long = fixedTime
-
-    override fun getStartAndEndOfDay(utc: Boolean): Pair<Long, Long> = Pair(1, 1)
-
-    override fun getTimezoneOffset(): Long = 1
-
-    override fun formatEpochMillis(millis: Long, format: String, asUtc: Boolean): String = ""
-
-    override fun formatUTCDate(date: String, format: String, asUtc: Boolean): String = ""
-
-    override fun formatAsLocalDate(date: String, format: String, asUtc: Boolean): String = ""
 }

@@ -1,6 +1,7 @@
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
 apply plugin: 'maven'
+apply from: '../tools/detekt.gradle'
 
 group = buildConfig.group
 

@@ -1,12 +1,13 @@
 package enfasys.android.impl.mvi
 
-import android.os.Bundle
 import androidx.lifecycle.ViewModelProviders
 import enfasys.android.core.DispatcherGroup
 import enfasys.android.core.Logger
-import enfasys.android.impl.*
+import enfasys.android.impl.BaseActivity
+import enfasys.android.impl.BaseViewModel
+import enfasys.android.impl.ViewModelFactory
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -16,9 +17,9 @@ import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 @Suppress("MemberVisibilityCanBePrivate")
-abstract class MviActivity<Action : MviAction, ViewState : MviViewState, ViewModel : BaseViewModel<Action, ViewState>> :
+abstract class MviActivity<A : Action, VS : ViewState, VM : BaseViewModel<A, VS>> :
     BaseActivity(),
-    MviView<Action, ViewState>, CoroutineScope {
+    MviView<A, VS>, CoroutineScope {
     @Inject
     protected lateinit var dispatcherGroup: DispatcherGroup
 
@@ -26,25 +27,25 @@ abstract class MviActivity<Action : MviAction, ViewState : MviViewState, ViewMod
     protected lateinit var logger: Logger
 
     @Inject
-    lateinit var viewModelFactory: ViewModelFactory<ViewModel>
-    protected val viewModel: ViewModel by lazy(LazyThreadSafetyMode.NONE) {
+    lateinit var viewModelFactory: ViewModelFactory<VM>
+    protected val viewModel: VM by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProviders.of(this, viewModelFactory)
             .get(getViewModel())
     }
 
-    protected abstract fun getViewModel(): Class<ViewModel>
+    protected abstract fun getViewModel(): Class<VM>
 
     override val coroutineContext: CoroutineContext
-        get() = Job() + dispatcherGroup.UI
+        get() = SupervisorJob() + dispatcherGroup.forUI
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onStart() {
+        super.onStart()
         bind()
     }
 
-    override fun onDestroy() {
+    override fun onStop() {
         cancel()
-        super.onDestroy()
+        super.onStop()
     }
 
     private fun bind() {

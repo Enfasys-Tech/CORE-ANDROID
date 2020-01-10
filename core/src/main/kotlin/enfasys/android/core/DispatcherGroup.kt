@@ -2,9 +2,10 @@ package enfasys.android.core
 
 import kotlinx.coroutines.CoroutineDispatcher
 
+@Suppress("PropertyName")
 interface DispatcherGroup {
-    val IO: CoroutineDispatcher
-    val Computation: CoroutineDispatcher
-    val UI: CoroutineDispatcher
-    val State: CoroutineDispatcher
+    val forIO: CoroutineDispatcher
+    val forComputation: CoroutineDispatcher
+    val forUI: CoroutineDispatcher
+    val forState: CoroutineDispatcher
 }

@@ -7,27 +7,41 @@ inline fun <reified T> getObject(
     arguments: Bundle?,
     savedInstanceState: Bundle?
 ): T? {
-    var result: T? = null
+    var result: T? = checkInArguments<T>(arguments, key)
 
+    if (result == null) {
+        result = checkInFragmentSavedInstanceState<T>(savedInstanceState, key)
+    }
+
+    return result
+}
+
+inline fun <reified T> checkInFragmentSavedInstanceState(
+    savedInstanceState: Bundle?,
+    key: String
+): T? {
+    if (savedInstanceState != null) {
+        val obj = savedInstanceState.get(key)
+        if (obj != null) {
+            if (obj is T) {
+                return obj
+            }
+        }
+    }
+    return null
+}
+
+inline fun <reified T> checkInArguments(
+    arguments: Bundle?,
+    key: String
+): T? {
     if (arguments != null) {
         val obj = arguments.get(key)
         if (obj != null) {
             if (obj is T) {
-                result = obj
+                return obj
             }
         }
     }
-
-    if (result == null) {
-        if (savedInstanceState != null) {
-            val obj = savedInstanceState.get(key)
-            if (obj != null) {
-                if (obj is T) {
-                    result = obj
-                }
-            }
-        }
-    }
-
-    return result
+    return null
 }

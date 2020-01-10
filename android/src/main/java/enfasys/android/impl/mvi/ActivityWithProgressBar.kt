@@ -4,8 +4,8 @@ import android.widget.ProgressBar
 import enfasys.android.impl.BaseViewModel
 import enfasys.android.impl.R
 
-abstract class MviActivityWithProgressBar<Action : MviAction, ViewState : MviViewState, ViewModel : BaseViewModel<Action, ViewState>> :
-    MviActivity<Action, ViewState, ViewModel>() {
+abstract class ActivityWithProgressBar<A : Action, VS : ViewState, VM : BaseViewModel<A, VS>> :
+    MviActivity<A, VS, VM>() {
     protected val progressBar: ProgressBar by lazy(LazyThreadSafetyMode.NONE) {
         findViewById<ProgressBar>(R.id.core_progressbar)
     }

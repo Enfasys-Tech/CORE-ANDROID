@@ -8,28 +8,42 @@ inline fun <reified T> getObject(
     intent: Intent,
     savedInstanceState: Bundle?
 ): T? {
-    var result: T? = null
+    var result: T? = checkInIntent<T>(intent, key)
 
+    if (result == null) {
+        result = checkInActivitySavedInstanceState<T>(savedInstanceState, key)
+    }
+
+    return result
+}
+
+inline fun <reified T> checkInActivitySavedInstanceState(
+    savedInstanceState: Bundle?,
+    key: String
+): T? {
+    if (savedInstanceState != null) {
+        val obj = savedInstanceState.get(key)
+        if (obj != null) {
+            if (obj is T) {
+                return obj
+            }
+        }
+    }
+    return null
+}
+
+inline fun <reified T> checkInIntent(
+    intent: Intent,
+    key: String
+): T? {
     val extras = intent.extras
     if (extras != null) {
         val obj = extras.get(key)
         if (obj != null) {
             if (obj is T) {
-                result = obj
+                return obj
             }
         }
     }
-
-    if (result == null) {
-        if (savedInstanceState != null) {
-            val obj = savedInstanceState.get(key)
-            if (obj != null) {
-                if (obj is T) {
-                    result = obj
-                }
-            }
-        }
-    }
-
-    return result
+    return null
 }
