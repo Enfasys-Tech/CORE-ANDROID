@@ -3,8 +3,10 @@ package enfasys.android.impl
 import androidx.lifecycle.ViewModel
 import com.freeletics.coredux.subscribeToChangedStateUpdates
 import enfasys.android.core.DispatcherGroup
+import enfasys.android.impl.mvi.Action
 import enfasys.android.impl.mvi.StateMachine
 import enfasys.android.impl.mvi.MviViewModel
+import enfasys.android.impl.mvi.ViewState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
@@ -16,21 +18,21 @@ import kotlinx.coroutines.flow.flowOn
 import kotlin.coroutines.CoroutineContext
 
 @Suppress("MemberVisibilityCanBePrivate")
-abstract class BaseViewModel<Action : enfasys.android.impl.mvi.Action, ViewState : enfasys.android.impl.mvi.ViewState>(
-    protected val stateMachine: StateMachine<Action, ViewState>,
+abstract class BaseViewModel<A : Action, VS : ViewState>(
+    protected val stateMachine: StateMachine<A, VS>,
     protected val dispatcherGroup: DispatcherGroup
-) : MviViewModel<Action, ViewState>, ViewModel(), CoroutineScope {
-    protected val statesChannel = ConflatedBroadcastChannel<ViewState>()
+) : MviViewModel<A, VS>, ViewModel(), CoroutineScope {
+    protected val statesChannel = ConflatedBroadcastChannel<VS>()
 
     override val coroutineContext: CoroutineContext
         get() = SupervisorJob() + dispatcherGroup.forIO
 
-    override fun states(): Flow<ViewState> =
+    override fun states(): Flow<VS> =
         statesChannel.asFlow()
             .distinctUntilChanged()
             .flowOn(coroutineContext)
 
-    override fun process(action: Action) {
+    override fun process(action: A) {
         stateMachine.dispatch(action)
     }
 
